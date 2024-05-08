@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Helol</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div>
+    <table class="client-table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>About yourself</th>
+            <th>age</th>
+            <th>sex</th>
+            <th>birthdate</th>
+            <th>hobby</th>
+            <th>requirement</th>
+            <th>info</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${clients}">
+                <td th:text="${c.getId()}"></td>
+                <td th:text="${c.getName()}"></td>
+                <td th:text="${c.getSurname()}"></td>
+                <td th:text="${c.getAboutYourself()}"></td>
+                <td th:text="${c.getAge()}"></td>
+                <td th:text="${c.getSex()}"></td>
+                <td th:text="${c.getBirthdate()}"></td>
+                <td th:text="${c.getHobby()}"></td>
+                <td th:text="${c.getRequirement()}"></td>
+                <td><a th:href="@{'/client_info?id=' + ${c.getId()}}">About</a></td>
+
+<!--                <td><a th:href="@{'/client_info.html' + ${c.getId()}}">About</a></td>-->
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

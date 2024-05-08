@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div>
+    <table class="client-info-table">
+        <thead>
+        <tr>
+            <th>date id</th>
+            <th>made the appointment</th>
+            <th>got the appointment</th>
+            <th>Date</th>
+            <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${clientinfo}">
+            <td th:text="${c.getId()}"></td>
+            <td th:text="${c.getClient1()}"></td>
+            <td th:text="${c.getClient2()}"></td>
+            <td th:text="${c.getDate() != null ? c.getDate() : c.getId()}"></td>
+            <td th:text="${c.getCountry()}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+    <form method="post" action="add_date">
+        <input type="number" name="first_person_id" class="text-input" placeholder="1 id" required>
+        <input type="number" name="second_person_id" class="text-input" placeholder="2 Id" required>
+        <input type="datetime-local" name="date" class="text-input" placeholder="name" required>
+        <div class="client-table">
+            <span class="input-group-text">Country</span>
+            <select class="form-select" name="Country" id="Country">
+                <option value="male"> male </option>
+                <option value="female"> female </option>
+            </select>
+        </div>
+        <input type="submit" value="Add new client" class="btn btn-sm btn-primary">
+    </form>
+</div>
+
+
+</body>
+</html>
