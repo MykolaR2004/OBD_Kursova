@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 
 @org.springframework.stereotype.Controller
 @AllArgsConstructor
@@ -23,14 +26,18 @@ public class Controller {
 
     @GetMapping("/client_info")
     public String client_info(@RequestParam int id, Model model){
+//        Optional<Client> a = cs.getAllClients();
         model.addAttribute("clientinfo",cs.getClientInfo(id));
-        System.out.println(cs.getClientInfo(id));
+        model.addAttribute("id",id);
+        model.addAttribute("client",cs.getnameSurnameById(id));
+        model.addAttribute("countrylist", cs.getCountries());
+        model.addAttribute("clients",cs.getClients());
         return "client_info";
     }
 
-    @PostMapping()
-    public String add_date(@RequestParam int id,int firstid, int secondid, int country, Model model){
-        model.addAttribute("clientinfo",cs.getClientInfo(id));
-        return "client_info";
+    @PostMapping("/add_date")
+    public String add_date(@RequestParam int firstid, int secondid, LocalDateTime date, int country, Model model){
+        cs.addDate(firstid, secondid, date, country);
+        return "index";
     }
 }

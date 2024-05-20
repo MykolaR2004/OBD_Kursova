@@ -5,6 +5,7 @@ import com.example.obd_kursova.model.ClientsReqsHobbs;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Integer> {
