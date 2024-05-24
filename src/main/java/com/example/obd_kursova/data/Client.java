@@ -25,14 +25,14 @@ public class Client {
     private String surname;
 
     @Lob
-    @Column(name = "about_yourself", nullable = false)
+    @Column(name = "aboutyourself", nullable = false)
     private String aboutYourself;
 
     @Column(name = "age")
     private Integer age;
 
     @Column(name = "sex")
-    private Integer sex;
+    private String sex;
 
     @Column(name = "birthdate")
     private LocalDate birthdate;

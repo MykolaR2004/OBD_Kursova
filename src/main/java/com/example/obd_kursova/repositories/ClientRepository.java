@@ -2,6 +2,7 @@ package com.example.obd_kursova.repositories;
 
 import com.example.obd_kursova.data.Client;
 import com.example.obd_kursova.model.ClientsReqsHobbs;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,3 +22,4 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
     List<ClientsReqsHobbs> getClientsWithReqsHobbs();
 
 }
+
