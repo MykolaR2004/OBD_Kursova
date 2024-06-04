@@ -7,14 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "characters_list")
-public class CharacterList {
+@Table(name = "requirements")
+public class Requirement {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "User_ID", nullable = false)
-    private Client userID;
+    @Lob
+    @Column(name = "requirement")
+    private String requirement;
 
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="chatStyle.css">
+</head>
+<body>
+<div class="container" id="chatContainer">
+    <h2>Chat between Clients</h2>
+    <div th:each="msg : ${messages}">
+        <div th:class="'message ' + (${msg.user_1_ID} == ${currentUserId} ? 'sender' : 'recipient')">
+            <div class="message-content">
+                <p>
+                    <strong th:text="${msg.user_2_ID} == ${currentUserId} ? ${msg.client1NameSurname} : ${msg.client1NameSurname}"></strong>
+                </p>
+                <p th:text="${msg.message}"></p>
+                <p><small th:text="${msg.creation_date}"></small></p>
+                <!-- Условие для отображения кнопки удаления только для исходящих сообщений -->
+                <div th:if="${msg.user_1_ID} == ${currentUserId}">
+                    <form th:action="@{/delete_message}" method="post" style="display:inline;">
+                        <input type="hidden" name="firstid" th:value="${currentUserId}">
+                        <input type="hidden" name="secondid" th:value="${secondClientId}">
+                        <input type="hidden" name="messageId" th:value="${msg.id}">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{/send_message}" method="post" class="send-message-form">
+        <input type="hidden" name="firstid" th:value="${currentUserId}">
+        <input type="hidden" name="secondid" th:value="${secondClientId}">
+        <div class="form-group">
+            <textarea name="message" class="form-control" placeholder="Enter your message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>
+
+<script>
+    function scrollToBottom() {
+        var chatContainer = document.getElementById("chatContainer");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    window.onload = scrollToBottom;
+</script>
+</body>
+</html>

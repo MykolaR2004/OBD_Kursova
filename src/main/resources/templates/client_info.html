@@ -2,20 +2,140 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Client info</title>
+    <title>Client Info</title>
+    <link rel="stylesheet" href="clientInfo.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<table>
-    <thead>
-    <tr>Total meetings</tr>
-    <tr>Common country</tr>
-    </thead>
-    <tbody>
-    <tr th:each="c : ${client}">
-        <td th:text="${c.getTotal_meetings()}"></td>
-        <td th:text="${c.getMost_common_country()}"></td>
-    </tbody>
-</table>
+<div class="container">
+    <form method="get" action="/" class="back-button-form">
+        <input type="submit" value="Go back" class="btn btn-sm btn-secondary">
+    </form>
+    <form action="/dates_info" method="get">
+        <input type="hidden" name="id" th:value="${clientInfo.getId()}"/>
+        <input type="submit" value="Look dates" class="btn btn-sm btn-secondary">
+    </form>
+    <form action="/chat_page" method="get">
+        <input type="hidden" name="id" th:value="${clientInfo.getId()}"/>
+        <input type="submit" value="Chat" class="btn btn-sm btn-secondary">
+    </form>
+    <form action="/archived_meetings" method="get">
+        <input type="submit" value="Look archive" class="btn btn-sm btn-secondary">
+    </form>
+    <form action="/country_statistics" method="get">
+        <input type="submit" value="Look stats" class="btn btn-sm btn-secondary">
+    </form>
+    <h2>Client Statistics</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Total Meetings</th>
+            <th>Common Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${clientStatistics}">
+            <td th:text="${c.totalMeetings}" id="totalMeetings"></td>
+            <td th:text="${c.mostCommonCountry}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="client-info">
+        <h3>Client Information</h3>
+        <div class="card">
+            <div class="card-body">
+                <div class="client-details">
+                    <div class="client-photo-wrapper">
+                        <img th:src="@{${clientInfo.getPhoto()}}" alt="Client Photo" class="client-photo">
+                    </div>
+                    <div class="client-data">
+                        <p><strong>ID:</strong> <span th:text="${clientInfo.id}"></span></p>
+                        <p><strong>Name:</strong> <span th:text="${clientInfo.name}"></span></p>
+                        <p><strong>Surname:</strong> <span th:text="${clientInfo.surname}"></span></p>
+                        <p><strong>About:</strong> <span th:text="${clientInfo.aboutYourself}"></span></p>
+                        <p><strong>Age:</strong> <span th:text="${clientInfo.age}"></span></p>
+                        <p><strong>Sex:</strong> <span th:text="${clientInfo.sex}"></span></p>
+                        <p><strong>Hobby:</strong> <span th:text="${clientInfo.hobby}"></span></p>
+                        <p><strong>Requirement:</strong> <span th:text="${clientInfo.requirement}"></span></p>
+                        <p><strong>Trait:</strong> <span th:text="${clientInfo.trait}"></span></p>
+                        <p><strong>Birthdate:</strong> <span th:text="${clientInfo.birthdate}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Meetings by Country</h3>
+    <canvas id="meetingsChart" width="400" height="200"></canvas>
+
+    <form method="get" action="/update_client" class="back-button-form">
+        <input type="hidden" name="id" th:value="${clientInfo.id}">
+        <input type="submit" value="Update client data" class="btn btn-sm btn-secondary">
+    </form>
+
+    <form id="deleteClientForm" method="post" action="/delete_client" class="back-button-form">
+        <input type="hidden" name="id" th:value="${clientInfo.id}">
+        <input type="hidden" id="totalMeetingsHidden" th:value="${totalMeetings}">
+        <input type="submit" id="deleteClientButton" value="Delete client" class="btn btn-sm btn-danger">
+    </form>
+</div>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        /*<![CDATA[*/
+        const countries =  /*[[${countriesJson}]]*/ null;
+        const meetings = /*[[${meetingsJson}]]*/ null;
+        const totalMeetings = /*[[${totalMeetings}]]*/ 0;
+        /*]]>*/
+        console.log("Countries JSON: ", countries);
+        console.log("Meetings JSON: ", meetings);
+
+        const parsedCountries = JSON.parse(countries);
+        const parsedMeetings = JSON.parse(meetings);
+
+        console.log("Parsed Countries: ", parsedCountries);
+        console.log("Parsed Meetings: ", parsedMeetings);
+
+        const ctx = document.getElementById('meetingsChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: parsedCountries,
+                datasets: [{
+                    label: 'Total Meetings',
+                    data: parsedMeetings,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value) {
+                                if (Number.isInteger(value)) {
+                                    return value;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        document.getElementById('deleteClientButton').addEventListener('click', function(event) {
+            if (totalMeetings !== 0) {
+                event.preventDefault();
+                alert('Невозможно удалить клиента с активными встречами');
+            }
+        });
+    });
+
+</script>
 
 </body>
 </html>

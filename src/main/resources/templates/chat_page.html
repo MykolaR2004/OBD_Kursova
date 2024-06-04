@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="chatStyle.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Active chats</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Client</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ac : ${activeChats}">
+            <td th:text="${ac.id}"></td>
+            <td th:text="${ac.clientNameSurname}"></td>
+            <td>
+                <form th:action="@{/open_chat}" method="get">
+                    <input type="hidden" name="firstClientId" th:value="${client.getId()}"/>
+                    <input type="hidden" name="secondClientId" th:value="${ac.id}"/>
+                    <button type="submit" class="btn btn-info">Show chat</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <h2>Available clients</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Client</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${availableClients}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.clientNameSurname}"></td>
+            <td>
+                <form th:action="@{/open_chat}" method="get">
+                    <input type="hidden" name="firstClientId" th:value="${client.getId()}"/>
+                    <input type="hidden" name="secondClientId" th:value="${c.id}"/>
+                    <button type="submit" class="btn btn-info">Create new chat</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -10,6 +10,12 @@
     <form method="get" action="/" class="back-button-form">
         <input type="submit" value="Go to Home" class="btn btn-sm btn-secondary">
     </form>
+    <form action="/client_info" method="get" class="back-button-form">
+        <input type="hidden" name="id" th:value="${client.id}" >
+        <input type="submit" value="About client" class="btn btn-sm btn-secondary">
+    </form>
+
+
     <h2>Client Information</h2>
     <table class="client-info-table">
         <thead>
@@ -19,6 +25,7 @@
             <th>Got the Appointment</th>
             <th>Date</th>
             <th>Country</th>
+            <th>Archive</th>
         </tr>
         </thead>
         <tbody>
@@ -28,8 +35,13 @@
             <td th:text="${c.getClient2()}"></td>
             <td th:text="${c.getDate() != null ? c.getDate() : c.getId()}"></td>
             <td th:text="${c.getCountry()}"></td>
-            <input type="hidden" name="first_person_id" th:value="${c.getClient1()}">
-            <input type="hidden" name="second_person_id" th:value="${c.getClient2()}">
+            <td>
+                <form th:action="@{/archive_date}" method="post">
+                    <input type="hidden" name="date_id" th:value="${c.id}" required>
+                    <input type="hidden" name="client_id" th:value="${client.id}" required>
+                    <button type="submit" class="btn btn-info">Archive date</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

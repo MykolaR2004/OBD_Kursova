@@ -14,7 +14,12 @@ public class Hobbylist {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "`User ID`")
+    @JoinColumn(name = "User_ID")
     private Client userID;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Hobby_ID")
+    private Hobby hobbyId;
+
 
 }

@@ -23,7 +23,7 @@ public class Chat {
     @JoinColumn(name = "User_2_ID", nullable = false)
     private Client user2;
 
-    @Column(name = "`Creation date`", nullable = false)
+    @Column(name = "Creation_date", nullable = false)
     private Instant creationDate;
 
     @Lob

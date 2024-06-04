@@ -17,11 +17,15 @@ public interface NewClientRepository extends JpaRepository<Client, Integer> {
     Integer getLastInsertId();
 
     @Modifying
-    @Query(value = "INSERT INTO hobbylist (`User ID`, `Hobby ID`) VALUES (?1, ?2)", nativeQuery = true)
+    @Query(value = "INSERT INTO hobbylist (User_ID, Hobby_ID) VALUES (?1, ?2)", nativeQuery = true)
     void insertHobby(int userId, int hobbyId);
 
     @Modifying
     @Query(value = "INSERT INTO requirements_list (User_ID, requirement_id) VALUES (?1, ?2)", nativeQuery = true)
     void insertRequirement(int userId, int requirementId);
+
+    @Modifying
+    @Query(value = "INSERT INTO characters_list (User_ID, Character_ID) VALUES (?1, ?2)", nativeQuery = true)
+    void insertTrait(int userId, int characterId);
 }
 

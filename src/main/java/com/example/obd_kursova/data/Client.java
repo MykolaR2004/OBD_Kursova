@@ -38,6 +38,6 @@ public class Client {
     private LocalDate birthdate;
 
     @Column(name = "photo")
-    private byte[] photo;
+    private String photo;
 
 }
