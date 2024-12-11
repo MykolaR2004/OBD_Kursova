@@ -17,4 +17,8 @@ public class RequirementsList {
     @JoinColumn(name = "User_ID", nullable = false)
     private Client user;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "Requirement_ID", nullable = false)
+    private Requirement requirement;
+
 }

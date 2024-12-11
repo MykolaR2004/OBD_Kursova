@@ -5,7 +5,7 @@ body {
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-start;  /* Changed from center to flex-start */
+    align-items: flex-start;
     height: 100vh;
 }
 
@@ -17,9 +17,8 @@ body {
     max-width: 800px;
     margin: 20px auto;
     text-align: center;
-    overflow-y: auto; /* Add vertical scroll if content overflows */
-    max-height: 90vh; /* Max height to avoid overflowing screen */
-    /* Add top padding to give space from top */
+    overflow-y: auto;
+    max-height: 90vh;
     padding: 60px 20px 20px;
 }
 
@@ -110,6 +109,18 @@ h2 {
     background-color: #5a6268;
 }
 
+.btn-info {
+    background: none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-info:hover {
+    text-decoration: none;
+}
+
 
 body {
     font-family: Arial, sans-serif;
@@ -169,3 +180,5 @@ h2 {
 .btn:hover {
     background-color: #0056b3;
 }
+
+

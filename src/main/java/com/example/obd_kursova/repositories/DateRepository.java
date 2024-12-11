@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public interface DateRepository extends JpaRepository<DatingTable, Integer> {
 
     @Query(value = """ 
-            INSERT INTO `meeting_agency`.`dating_table` (`User_1_ID`, `User_2_ID`, `Date`, `Registration_country`)
+            INSERT INTO dating_table (`User_1_ID`, `User_2_ID`, `Date`, `Registration_country`)
 VALUES (?1, ?2, ?3, ?4);
 """, nativeQuery = true)
     void getDateList(int firstid, int secondid, LocalDateTime date, int country);

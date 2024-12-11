@@ -114,12 +114,13 @@ public class ClientService {
     }
 
     @Transactional
-    public void updateClient(int id, String firstName, String lastName, String aboutYourself, int age, String sex, LocalDate birthdate, int hobby, int requirement, int trait) {
+    public void updateClient(int id, String firstName, String lastName, String aboutYourself, int age, String sex, LocalDate birthdate, List<Integer> hobby, List<Integer> requirement, List<Integer> trait) {
         updateClientRepository.updateClient(id, firstName, lastName, aboutYourself, age, sex, birthdate);
         updateClientRepository.updateHobby(id, hobby);
         updateClientRepository.updateRequirement(id, requirement);
         updateClientRepository.updateTrait(id, trait);
     }
+
 
     @Transactional
     public void archiveDate(int dateId) {

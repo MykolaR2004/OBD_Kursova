@@ -35,8 +35,18 @@
             <td th:text="${c.getBirthdate()}"></td>
             <td th:text="${c.getHobby()}"></td>
             <td th:text="${c.getRequirement()}"></td>
-            <td><a th:href="@{'/client_info?id=' + ${c.getId()}}">About client</a></td>
-            <td><a th:href="@{'/dates_info?id=' + ${c.getId()}}">Look dates</a></td>
+            <td>
+                <form th:action="@{/client_info}" method="get">
+                    <input type="hidden" name="id" th:value="${c.getId()}"/>
+                    <button type="submit" class="btn btn-info">About client</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/dates_info}" method="get">
+                    <input type="hidden" name="id" th:value="${c.getId()}"/>
+                    <button type="submit" class="btn btn-info">Look dates</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -73,17 +83,25 @@
         <div class="form-group">
             <label for="hobby">Hobby:</label>
             <select class="form-select" name="hobby" id="Hobby">
-                <option th:each="hobby : ${hobbies}" th:value="${hobby.getId()}" th:text="${hobby.getHobby()}"></option>
+                <option th:each="h : ${hobbies}" th:value="${h.getId()}" th:text="${h.getHobby()}"></option>
             </select>
         </div>
         <div class="form-group">
             <label for="requirement">Requirement:</label>
             <select class="form-select" name="requirement" id="Requirement">
-                <option th:each="requirement : ${requirements}" th:value="${requirement.getId()}" th:text="${requirement.getHobby()}"></option>
+                <option th:each="r : ${requirements}" th:value="${r.getId()}" th:text="${r.getRequirement()}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="requirement">Trait:</label>
+            <select class="form-select" name="trait" id="Trait">
+                <option th:each="ch : ${characters}" th:value="${ch.getId()}" th:text="${ch.getTrait()}"></option>
             </select>
         </div>
         <input type="submit" value="Add New Client" class="btn btn-sm btn-primary">
     </form>
 </div>
+
+
 </body>
 </html>

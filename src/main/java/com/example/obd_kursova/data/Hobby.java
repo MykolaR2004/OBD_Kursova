@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -18,4 +20,6 @@ public class Hobby {
     @Column(name = "Hobby", nullable = false)
     private String hobby;
 
+    @ManyToMany(mappedBy = "hobbies")
+    private List<Client> clients;
 }

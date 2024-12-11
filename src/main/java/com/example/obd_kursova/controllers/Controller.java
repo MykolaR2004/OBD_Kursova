@@ -191,13 +191,14 @@ public class Controller {
                                @RequestParam int age,
                                @RequestParam String sex,
                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate,
-                               @RequestParam int hobby,
-                               @RequestParam int requirement,
-                               @RequestParam int trait,
+                               @RequestParam List<Integer> hobby,
+                               @RequestParam List<Integer> requirement,
+                               @RequestParam List<Integer> trait,
                                Model model) {
         cs.updateClient(id, firstName, lastName, aboutYourself, age, sex, birthdate, hobby, requirement, trait);
         return "redirect:/client_info?id=" + id;
     }
+
 
     @PostMapping("/delete_client")
     public String deleteClient(@RequestParam int id,

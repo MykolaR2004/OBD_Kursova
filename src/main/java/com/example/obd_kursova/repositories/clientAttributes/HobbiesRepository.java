@@ -10,9 +10,14 @@ import java.util.List;
 public interface HobbiesRepository extends JpaRepository<Hobby, Integer> {
     @Query(value = """ 
     SELECT
-	H.ID,
-	H.Hobby
-FROM hobbies H
+	    H.ID,
+	    H.Hobby
+    FROM hobbies H
 """, nativeQuery = true)
     List<Hobbies> getHobbyList();
+
+
+    @Override
+    List<Hobby>
+    findAllById(Iterable<Integer> ids);
 }

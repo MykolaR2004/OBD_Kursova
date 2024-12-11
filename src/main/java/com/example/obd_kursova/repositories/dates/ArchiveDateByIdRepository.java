@@ -13,9 +13,9 @@ public interface ArchiveDateByIdRepository extends JpaRepository<Archive, Intege
     @Transactional
     @Query(value = """ 
 
-            INSERT INTO `meeting_agency`.archive (`Date_info`, `Country`)
-VALUES (
-    (
+    INSERT INTO archive (`Date_info`, `Country`)
+    VALUES (
+        (
         SELECT
             CONCAT(
                 C1.name, ' ', C1.surname, ', ',
@@ -40,7 +40,7 @@ VALUES (
 
     @Modifying
     @Query(value = """ 
-        DELETE FROM meeting_agency.dating_table WHERE  dating_table.ID = ?1
+        DELETE FROM dating_table WHERE  dating_table.ID = ?1
 """, nativeQuery = true)
     void removeDateFromTable(int dateId);
 

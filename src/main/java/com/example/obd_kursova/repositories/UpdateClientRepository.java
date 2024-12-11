@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface UpdateClientRepository extends JpaRepository<Client, Integer> {
 
@@ -18,17 +19,17 @@ public interface UpdateClientRepository extends JpaRepository<Client, Integer> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE hobbylist SET Hobby_ID = ?2 WHERE User_ID = ?1", nativeQuery = true)
-    void updateHobby(int userId, int hobbyId);
+    void updateHobby(int userId, List<Integer> hobbyId);
 
     @Modifying
     @Transactional
     @Query(value = "UPDATE requirements_list SET requirement_id = ?2 WHERE User_ID = ?1", nativeQuery = true)
-    void updateRequirement(int userId, int requirementId);
+    void updateRequirement(int userId, List<Integer> requirementId);
 
     @Modifying
     @Transactional
     @Query(value = "UPDATE characters_list SET Character_ID = ?2 WHERE User_ID = ?1", nativeQuery = true)
-    void updateTrait(int userId, int traitId);
+    void updateTrait(int userId, List<Integer> traitId);
 }
 
 

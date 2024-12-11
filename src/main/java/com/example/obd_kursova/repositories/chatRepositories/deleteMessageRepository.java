@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface deleteMessageRepository extends JpaRepository<Client, Integer> {
     @Query(value = """ 
-DELETE FROM `meeting_agency`.`chat` WHERE  `ID`=?1
+DELETE FROM chat WHERE  `ID`=?1
 """, nativeQuery = true)
     void deleteMessage(int messageId);
 

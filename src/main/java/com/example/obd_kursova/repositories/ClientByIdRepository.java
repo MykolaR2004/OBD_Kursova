@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ClientByIdRepository  extends JpaRepository<Client, Integer> {
     @Query(value = """ 
-    SELECT
+SELECT
     C.id,
     C.name,
     C.surname,
@@ -19,19 +19,24 @@ public interface ClientByIdRepository  extends JpaRepository<Client, Integer> {
     C.sex,
     C.birthdate,
     C.photo,
-        H.Hobby,
-        R.Requirement,
-        CH.Trait
-    FROM
-        client C, hobbies H, hobbylist HL, requirements R, requirements_list RL, characters CH, characters_list CL
-    WHERE
-    	C.id = ?1
-      AND HL.User_ID = C.id
-      AND HL.Hobby_ID = H.ID
-      AND RL.User_ID = C.id
-      AND R.ID = RL.requirement_id
-      AND CL.User_ID = C.id
-      AND CL.Character_ID = CH.ID
+    GROUP_CONCAT(DISTINCT H.Hobby ORDER BY H.Hobby SEPARATOR ', ') AS hobby,
+    GROUP_CONCAT(DISTINCT R.Requirement ORDER BY R.Requirement SEPARATOR ', ') AS requirement,
+    GROUP_CONCAT(DISTINCT CH.Trait ORDER BY CH.Trait SEPARATOR ', ') AS trait
+FROM
+    client C
+    JOIN hobbylist HL ON HL.User_ID = C.id
+    JOIN hobbies H ON HL.Hobby_ID = H.ID
+    JOIN requirements_list RL ON RL.User_ID = C.id
+    JOIN requirements R ON R.ID = RL.requirement_id
+    JOIN characters_list CL ON CL.User_ID = C.id
+    JOIN characters CH ON CH.ID = CL.Character_ID
+WHERE
+    C.id = ?1
+GROUP BY
+    C.id, C.name, C.surname, C.aboutYourself, C.birthdate, C.sex, C.photo
+ORDER BY
+    C.id;
+
 """, nativeQuery = true)
     ClientById getClientById(int clientid);
 

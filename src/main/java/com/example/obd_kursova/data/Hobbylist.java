@@ -10,8 +10,9 @@ import lombok.Setter;
 @Table(name = "hobbylist")
 public class Hobbylist {
     @Id
-    @Column(name = "ID", nullable = false)
-    private Integer id;
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    @Column(name = "id", nullable = false)
+//    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_ID")

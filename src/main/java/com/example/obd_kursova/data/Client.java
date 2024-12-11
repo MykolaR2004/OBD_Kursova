@@ -1,10 +1,12 @@
 package com.example.obd_kursova.data;
 
+import com.example.obd_kursova.model.Characters;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,4 +42,21 @@ public class Client {
     @Column(name = "photo")
     private String photo;
 
+    @ManyToMany
+    @JoinTable(name = "hobbylist",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "hobby_id"))
+    private List<Hobby> hobbies;
+
+    @ManyToMany
+    @JoinTable(name = "requirements_list",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "requirement_id"))
+    private List<Requirement> requirements;
+
+    @ManyToMany
+    @JoinTable(name = "characters_list",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "character_id"))
+    private List<Character> traits;
 }
