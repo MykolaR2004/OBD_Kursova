@@ -8,23 +8,25 @@
 </head>
 <body>
 <div class="container">
-    <form method="get" action="/" class="back-button-form">
-        <input type="submit" value="Go back" class="btn btn-sm btn-secondary">
-    </form>
-    <form action="/dates_info" method="get">
-        <input type="hidden" name="id" th:value="${clientInfo.getId()}"/>
-        <input type="submit" value="Look dates" class="btn btn-sm btn-secondary">
-    </form>
-    <form action="/chat_page" method="get">
-        <input type="hidden" name="id" th:value="${clientInfo.getId()}"/>
-        <input type="submit" value="Chat" class="btn btn-sm btn-secondary">
-    </form>
-    <form action="/archived_meetings" method="get">
-        <input type="submit" value="Look archive" class="btn btn-sm btn-secondary">
-    </form>
-    <form action="/country_statistics" method="get">
-        <input type="submit" value="Look stats" class="btn btn-sm btn-secondary">
-    </form>
+    <div class="button-group">
+        <form method="get" action="/" class="back-button-form">
+            <input type="submit" value="Go back" class="btn btn-sm btn-secondary">
+        </form>
+        <form action="/dates_info" method="get">
+            <input type="hidden" name="id" th:value="${clientInfo.getId()}"/>
+            <input type="submit" value="Look dates" class="btn btn-sm btn-secondary">
+        </form>
+        <form action="/chat_page" method="get">
+            <input type="hidden" name="id" th:value="${clientInfo.getId()}"/>
+            <input type="submit" value="Chat" class="btn btn-sm btn-secondary">
+        </form>
+        <form action="/archived_meetings" method="get">
+            <input type="submit" value="Look archive" class="btn btn-sm btn-secondary">
+        </form>
+        <form action="/country_statistics" method="get">
+            <input type="submit" value="Look stats" class="btn btn-sm btn-secondary">
+        </form>
+    </div>
     <h2>Client Statistics</h2>
     <table class="table table-striped">
         <thead>
@@ -131,11 +133,16 @@
             if (totalMeetings !== 0) {
                 event.preventDefault();
                 alert('Невозможно удалить клиента с активными встречами');
+            } else {
+                const confirmation = confirm('Вы уверены, что хотите удалить клиента? Это действие не может быть отменено.');
+                if (!confirmation) {
+                    event.preventDefault(); // Отмена отправки формы
+                }
             }
         });
     });
-
 </script>
+
 
 </body>
 </html>
