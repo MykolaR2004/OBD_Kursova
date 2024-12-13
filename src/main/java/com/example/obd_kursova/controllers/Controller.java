@@ -3,7 +3,8 @@ package com.example.obd_kursova.controllers;
 import com.example.obd_kursova.model.ClientMostPopularCountries;
 import com.example.obd_kursova.model.MeetingsPerCountryPerYear;
 import com.example.obd_kursova.services.ChatService;
-import com.example.obd_kursova.services.ClientService;
+import com.example.obd_kursova.services.ClientOperationsService;
+import com.example.obd_kursova.services.MainService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -24,39 +25,40 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class Controller {
 
-    private ClientService cs;
+    private MainService mainService;
     private ChatService chat;
+    private ClientOperationsService clientOperations;
 
 
 
     @GetMapping("/")
     public String getClients(Model model) {
-        model.addAttribute("clients", cs.getClients());
-        model.addAttribute("hobbies", cs.getHobbies());
-        model.addAttribute("requirements", cs.getRequirements());
-        model.addAttribute("characters", cs.getCharacters());
+        model.addAttribute("clients", mainService.getClients());
+        model.addAttribute("hobbies", mainService.getHobbies());
+        model.addAttribute("requirements", mainService.getRequirements());
+        model.addAttribute("characters", mainService.getCharacters());
         return "index";
     }
 
     @GetMapping("/dates_info")
     public String datesInfo(@RequestParam int id, Model model){
-        model.addAttribute("clientinfo",cs.getDateInfo(id));
+        model.addAttribute("clientinfo", mainService.getDateInfo(id));
         model.addAttribute("id",id);
-        model.addAttribute("client",cs.getNameSurnameById(id));
-        model.addAttribute("countrylist", cs.getCountries());
-        model.addAttribute("clients",cs.getAllOtherClients(id));
+        model.addAttribute("client", mainService.getNameSurnameById(id));
+        model.addAttribute("countrylist", mainService.getCountries());
+        model.addAttribute("clients", mainService.getAllOtherClients(id));
         return "dates_info";
     }
 
 
     @GetMapping("/client_info")
     public String clientInfo(@RequestParam int id, Model model) {
-        model.addAttribute("clientStatistics", cs.getClientTotalMeetingsAndCountryInfo(id));
-        model.addAttribute("clientInfo", cs.getClientById(id));
-        model.addAttribute("clientPopularCountries", cs.getClientPopularCountries(id));
+        model.addAttribute("clientStatistics", mainService.getClientTotalMeetingsAndCountryInfo(id));
+        model.addAttribute("clientInfo", mainService.getClientById(id));
+        model.addAttribute("clientPopularCountries", mainService.getClientPopularCountries(id));
 
-        List<ClientMostPopularCountries> popularCountries = cs.getClientPopularCountries(id);
-        int totalMeetings = cs.getClientTotalMeetings(id).getTotalMeetings();
+        List<ClientMostPopularCountries> popularCountries = mainService.getClientPopularCountries(id);
+        int totalMeetings = mainService.getClientTotalMeetings(id).getTotalMeetings();
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -79,16 +81,16 @@ public class Controller {
 
     @GetMapping("/country_statistics")
     public String countryStat(Model model){
-        model.addAttribute("countrylist", cs.getCountries());
+        model.addAttribute("countrylist", mainService.getCountries());
         return "country_statistics";
     }
 
     @PostMapping("/country_statistics")
     public String countryStat(@RequestParam int year, @RequestParam String country, Model model){
-        model.addAttribute("countrylist", cs.getCountries());
+        model.addAttribute("countrylist", mainService.getCountries());
         model.addAttribute("year", year);
         model.addAttribute("selectedCountry", country);
-        List<MeetingsPerCountryPerYear> countryStats = cs.getMeetingsPerCountry(year, country);
+        List<MeetingsPerCountryPerYear> countryStats = mainService.getMeetingsPerCountry(year, country);
         model.addAttribute("countryStat", countryStats);
 
         List<String> months = countryStats.stream().map(MeetingsPerCountryPerYear::getMonth).collect(Collectors.toList());
@@ -108,17 +110,60 @@ public class Controller {
     }
 
     @GetMapping("/update_client")
-    public String updateClient(@RequestParam int id, Model model){
-        model.addAttribute("clientInfo", cs.getClientById(id));
-        model.addAttribute("hobbies", cs.getHobbies());
-        model.addAttribute("requirements", cs.getRequirements());
-        model.addAttribute("characters", cs.getCharacters());
+    public String updateClient(@RequestParam int id, Model model) {
+        model.addAttribute("clientInfo", mainService.getClientById(id));
+        model.addAttribute("clientHobbies", mainService.getClientHobbies(id));
+        model.addAttribute("clientRequirements", mainService.getClientRequirements(id));
+        model.addAttribute("clientTraits", mainService.getClientTraits(id));
+        model.addAttribute("clientAvailableHobbies", clientOperations.getAvailableHobbies(id));
+        model.addAttribute("clientAvailableRequirements", clientOperations.getAvailableRequirements(id));
+        model.addAttribute("clientAvailableTraits", clientOperations.getAvailableCharacters(id));
+        model.addAttribute("hobbies", mainService.getHobbies());
+        model.addAttribute("requirements", mainService.getRequirements());
+        model.addAttribute("characters", mainService.getCharacters());
         return "update_client";
+    }
+
+
+    @PostMapping("/add_hobby")
+    public String addHobby(@RequestParam int clientId, @RequestParam int hobbyId) {
+        clientOperations.addHobbyToClient(clientId, hobbyId);
+        return "redirect:/update_client?id=" + clientId;
+    }
+
+    @PostMapping("/delete_hobby")
+    public String deleteHobby(@RequestParam int clientId, @RequestParam int hobbyId) {
+        clientOperations.removeHobbyFromClient(clientId, hobbyId);
+        return "redirect:/update_client?id=" + clientId;
+    }
+
+    @PostMapping("/add_requirement")
+    public String addRequirement(@RequestParam int clientId, @RequestParam int requirementId) {
+        clientOperations.addRequirementToClient(clientId, requirementId);
+        return "redirect:/update_client?id=" + clientId;
+    }
+
+    @PostMapping("/delete_requirement")
+    public String deleteRequirement(@RequestParam int clientId, @RequestParam int requirementId) {
+        clientOperations.removeRequirementFromClient(clientId, requirementId);
+        return "redirect:/update_client?id=" + clientId;
+    }
+
+    @PostMapping("/add_trait")
+    public String addTrait(@RequestParam int clientId, @RequestParam int traitId) {
+        clientOperations.addTraitToClient(clientId, traitId);
+        return "redirect:/update_client?id=" + clientId;
+    }
+
+    @PostMapping("/delete_trait")
+    public String deleteTrait(@RequestParam int clientId, @RequestParam int traitId) {
+        clientOperations.removeTraitFromClient(clientId, traitId);
+        return "redirect:/update_client?id=" + clientId;
     }
 
     @GetMapping("/chat_page")
     public String chatClient(@RequestParam int id, Model model){
-        model.addAttribute("client",cs.getNameSurnameById(id));
+        model.addAttribute("client", mainService.getNameSurnameById(id));
         model.addAttribute("availableClients", chat.getClientsForNewChat(id));
         model.addAttribute("activeChats", chat.getActiveChats(id));
         return "chat_page";
@@ -151,19 +196,19 @@ public class Controller {
 
     @GetMapping("/archived_meetings")
     public String archivedMeetings(Model model){
-        model.addAttribute("archive", cs.getArchivedMeetings());
+        model.addAttribute("archive", mainService.getArchivedMeetings());
         return "archived_meetings";
     }
 
     @PostMapping("/add_date")
     public String add_date(@RequestParam int firstid, int secondid, LocalDateTime date, int country, Model model){
-        cs.addDate(firstid, secondid, date, country);
+        mainService.addDate(firstid, secondid, date, country);
         return "redirect:/dates_info?id=" + firstid;
     }
 
     @PostMapping("/archive_date")
     public String archive_date(@RequestParam int date_id, int client_id, Model model){
-        cs.archiveDate(date_id);
+        mainService.archiveDate(date_id);
         System.out.println("DATE COPIED?");
         return "redirect:/dates_info?id=" + client_id;
     }
@@ -179,7 +224,7 @@ public class Controller {
                             @RequestParam int requirement,
                             @RequestParam int trait,
                             Model model) {
-        cs.addClient(firstName, lastName, aboutYourself, age, sex, birthdate, hobby, requirement, trait);
+        clientOperations.addClient(firstName, lastName, aboutYourself, age, sex, birthdate, hobby, requirement, trait);
         return "redirect:/";
     }
 
@@ -191,11 +236,8 @@ public class Controller {
                                @RequestParam int age,
                                @RequestParam String sex,
                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate,
-                               @RequestParam List<Integer> hobby,
-                               @RequestParam List<Integer> requirement,
-                               @RequestParam List<Integer> trait,
                                Model model) {
-        cs.updateClient(id, firstName, lastName, aboutYourself, age, sex, birthdate, hobby, requirement, trait);
+        mainService.updateClient(id, firstName, lastName, aboutYourself, age, sex, birthdate);
         return "redirect:/client_info?id=" + id;
     }
 
@@ -203,7 +245,7 @@ public class Controller {
     @PostMapping("/delete_client")
     public String deleteClient(@RequestParam int id,
                                Model model) {
-        cs.deleteClient(id);
+        mainService.deleteClient(id);
         return "redirect:/";
     }
 
@@ -212,10 +254,10 @@ public class Controller {
     @GetMapping("/sortedClients")
     public String getSortedClients(@RequestParam(required = false) String sort, Model model) {
         if (sort != null) {
-            model.addAttribute("clients", cs.getSortedClients(sort));
-            model.addAttribute("hobbies", cs.getHobbies());
-            model.addAttribute("requirements", cs.getRequirements());
-            model.addAttribute("characters", cs.getCharacters());
+            model.addAttribute("clients", mainService.getSortedClients(sort));
+            model.addAttribute("hobbies", mainService.getHobbies());
+            model.addAttribute("requirements", mainService.getRequirements());
+            model.addAttribute("characters", mainService.getCharacters());
         }
         if (Objects.equals(sort, "id")){
             return getClients(model);

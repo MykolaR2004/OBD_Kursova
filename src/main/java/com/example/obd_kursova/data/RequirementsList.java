@@ -10,15 +10,12 @@ import lombok.Setter;
 @Table(name = "requirements_list")
 public class RequirementsList {
     @Id
-    @Column(name = "ID", nullable = false)
-    private Integer id;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "User_ID", nullable = false)
-    private Client user;
+    private Client userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Requirement_ID", nullable = false)
-    private Requirement requirement;
+    private Requirement requirementId;
 
 }

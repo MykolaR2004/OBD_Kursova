@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Update Client</title>
-    <link rel="stylesheet" href="clientInfo.css">
+    <link rel="stylesheet" href="updateClient.css">
 </head>
 <body>
 <div class="container">
@@ -44,35 +44,95 @@
             <input type="date" id="birthdate" name="birthdate" class="text-input" th:value="${clientInfo.birthdate}" required>
         </div>
 
-        <div class="form-group">
-            <label for="hobby">Hobby:</label>
-            <select class="form-select" name="hobby" id="hobby">
-                <option th:each="h : ${hobbies}" th:value="${h.getId()}" th:text="${h.getHobby()}"
-                        th:selected="${h.hobby} == ${clientInfo.hobby}"></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="requirement">Requirement:</label>
-            <select class="form-select" name="requirement" id="requirement">
-                <option th:each="r : ${requirements}" th:value="${r.getId()}" th:text="${r.getRequirement()}"
-                        th:selected="${r.requirement} == ${clientInfo.requirement}"></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="trait">Trait:</label>
-            <select class="form-select" name="trait" id="trait">
-                <option th:each="ch : ${characters}" th:value="${ch.getId}" th:text="${ch.getTrait}"
-                        th:selected="${ch.trait} == ${clientInfo.trait}"></option>
-            </select>
-        </div>
-
-        <input type="submit" value="Update Client" class="btn btn-sm btn-primary">
-        <form method="get" action="/index" class="back-button-form">
-            <input type="submit" value="Go back" class="btn btn-sm btn-secondary">
-        </form>
+        <input type="submit" value="Update Basic Info" class="btn btn-sm btn-primary">
     </form>
+
+    <hr>
+
+    <!-- Hobbies Table -->
+    <h3>Hobbies</h3>
+    <table>
+        <tr>
+            <th>Hobby</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="hobby : ${clientHobbies}">
+            <td th:text="${hobby.hobby}"></td>
+            <td>
+                <form method="post" action="/delete_hobby" style="display:inline;">
+                    <input type="hidden" name="clientId" th:value="${clientInfo.id}">
+                    <input type="hidden" name="hobbyId" th:value="${hobby.id}">
+                    <button type="submit" th:disabled="${clientHobbies.size() == 1}">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <form method="post" action="/add_hobby">
+        <input type="hidden" name="clientId" th:value="${clientInfo.id}">
+        <label for="hobbySelect">Add Hobby:</label>
+        <select id="hobbySelect" name="hobbyId" class="form-select">
+            <option th:each="h : ${clientAvailableHobbies}" th:if="${#lists.contains(clientHobbies, h) == false}"
+                    th:value="${h.id}" th:text="${h.hobby}"></option>
+        </select>
+        <button type="submit">Add Hobby</button>
+    </form>
+
+
+    <h3>Requirements</h3>
+    <table>
+        <tr>
+            <th>Requirement</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="req, iter : ${clientRequirements}">
+            <td th:text="${req.requirement}"></td>
+            <td>
+                <form method="post" action="/delete_requirement" style="display:inline;">
+                    <input type="hidden" name="clientId" th:value="${clientInfo.id}">
+                    <input type="hidden" name="requirementId" th:value="${req.id}">
+                    <button type="submit" th:disabled="${clientRequirements.size() == 1}">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <form method="post" action="/add_requirement">
+        <input type="hidden" name="clientId" th:value="${clientInfo.id}">
+        <label for="requirementSelect">Add Requirement:</label>
+        <select id="requirementSelect" name="requirementId" class="form-select">
+            <option th:each="r : ${clientAvailableRequirements}" th:value="${r.id}" th:text="${r.requirement}"></option>
+        </select>
+        <button type="submit">Add Requirement</button>
+    </form>
+
+    <h3>Traits</h3>
+    <table>
+        <tr>
+            <th>Trait</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="trait, iter : ${clientTraits}">
+            <td th:text="${trait.trait}"></td>
+            <td>
+                <form method="post" action="/delete_trait" style="display:inline;">
+                    <input type="hidden" name="clientId" th:value="${clientInfo.id}">
+                    <input type="hidden" name="traitId" th:value="${trait.id}">
+                    <button type="submit" th:disabled="${clientTraits.size() == 1}">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <form method="post" action="/add_trait">
+        <input type="hidden" name="clientId" th:value="${clientInfo.id}">
+        <label for="traitSelect">Add Trait:</label>
+        <select id="traitSelect" name="traitId" class="form-select">
+            <option th:each="t : ${clientAvailableTraits}" th:value="${t.id}" th:text="${t.trait}"></option>
+        </select>
+        <button type="submit">Add Trait</button>
+    </form>
+
+
+
+
 </div>
 </body>
 </html>
