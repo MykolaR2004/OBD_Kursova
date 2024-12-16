@@ -25,6 +25,7 @@
             <th>Got the Appointment</th>
             <th>Date</th>
             <th>Country</th>
+            <th>Edit</th>
             <th>Archive</th>
         </tr>
         </thead>
@@ -35,6 +36,13 @@
             <td th:text="${c.getClient2()}"></td>
             <td th:text="${c.getDate() != null ? c.getDate() : c.getId()}"></td>
             <td th:text="${c.getCountry()}"></td>
+            <td>
+                <form th:action="@{/edit_date}" method="get">
+                    <input type="hidden" name="date_id" th:value="${c.getId()}" required>
+                    <input type="hidden" name="client_id" th:value="${client.getId()}" required>
+                    <button type="submit" class="btn btn-info">Edit date</button>
+                </form>
+            </td>
             <td>
                 <form th:action="@{/archive_date}" method="post">
                     <input type="hidden" name="date_id" th:value="${c.id}" required>

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/dating_agency_new
+    url: jdbc:mariadb://localhost:3306/dating_agency_3
     username: student
     password: 1234
 

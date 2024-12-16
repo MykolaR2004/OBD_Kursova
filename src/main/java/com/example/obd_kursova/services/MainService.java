@@ -5,9 +5,7 @@ import com.example.obd_kursova.model.*;
 import com.example.obd_kursova.repositories.*;
 import com.example.obd_kursova.repositories.archive.ArchiveRepository;
 import com.example.obd_kursova.repositories.clientAttributes.*;
-import com.example.obd_kursova.repositories.dates.ArchiveDateByIdRepository;
-import com.example.obd_kursova.repositories.dates.ClientDateInfoRepository;
-import com.example.obd_kursova.repositories.dates.NewDateRepository;
+import com.example.obd_kursova.repositories.dates.*;
 import com.example.obd_kursova.repositories.onClientOperations.*;
 import com.example.obd_kursova.repositories.statistics.ClientPopularCountriesRepository;
 import com.example.obd_kursova.repositories.statistics.ClientTotalMeetingsAndCountryByIdRepository;
@@ -30,8 +28,12 @@ public class MainService {
     private final ClientByIdRepository clientByIdRepository;
     private final AllClientsWithoutId clientsWithoutId;
     private final CountryRepository countryRepository;
+
+    private final FindDateByIdDateRepository findDateByIdDateRepository;
+    private final UpdateDateRepository updateDateRepository;
     private final NewDateRepository newDateRepository;
     private final ArchiveDateByIdRepository archiveDateByIdRepository;
+
     private final HobbiesRepository hobbiesRepository;
     private final RequirementsRepository requirementsRepository;
     private final CharactersRepository charactersRepository;
@@ -141,5 +143,14 @@ public class MainService {
 
     public List<Characters> getClientTraits(int clientId) {
         return clientTraitsRepository.findTraitsByClientId(clientId);
+    }
+
+    public DatesInfo getDateByIdInfo(int dateId) {
+        return findDateByIdDateRepository.findDateById(dateId);
+    }
+
+    @Transactional
+    public void updateDate(int dateId, LocalDateTime date) {
+        updateDateRepository.updateDate(date, dateId);
     }
 }
