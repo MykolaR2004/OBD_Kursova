@@ -5,6 +5,7 @@ import com.example.obd_kursova.model.ExistingChat;
 import com.example.obd_kursova.repositories.chatRepositories.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,10 +31,12 @@ public class ChatService {
         return existingChat.getExistingChat(firstClientId,secondClientId);
     }
 
+    @Transactional
     public void sendMessage(int firstClientId, int secondClientId, String message) {
         newMessageRepository.newMessage(firstClientId, secondClientId, message);
     }
 
+    @Transactional
     public void deleteMessage(int messageId) {
         deleteMessage.deleteMessage(messageId);
     }
