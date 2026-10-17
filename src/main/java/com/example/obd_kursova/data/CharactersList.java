@@ -10,11 +10,12 @@ import lombok.Setter;
 @Table(name = "characters_list")
 public class CharactersList {
     @Id
-    @Column(name = "ID", nullable = false)
-    private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "User_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "User_ID")
     private Client userID;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Character_ID")
+    private Character characterId;
 
 }

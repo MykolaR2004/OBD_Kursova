@@ -110,8 +110,8 @@ public class MainService {
     }
 
     @Transactional
-    public void updateClient(int id, String firstName, String lastName, String aboutYourself, int age, String sex, LocalDate birthdate) {
-        updateClientRepository.updateClient(id, firstName, lastName, aboutYourself, age, sex, birthdate);
+    public void updateClient(int id, String firstName, String lastName, String aboutYourself, String sex, LocalDate birthdate) {
+        updateClientRepository.updateClient(id, firstName, lastName, aboutYourself, sex, birthdate);
     }
 
 

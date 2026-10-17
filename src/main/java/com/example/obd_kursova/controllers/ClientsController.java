@@ -126,13 +126,12 @@ public class ClientsController {
     public String addClient(@RequestParam String firstName,
                             @RequestParam String lastName,
                             @RequestParam String aboutYourself,
-                            @RequestParam int age,
                             @RequestParam String sex,
                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate,
                             @RequestParam int hobby,
                             @RequestParam int requirement,
                             @RequestParam int trait) {
-        clientOperations.addClient(firstName, lastName, aboutYourself, age, sex, birthdate, hobby, requirement, trait);
+        clientOperations.addClient(firstName, lastName, aboutYourself, sex, birthdate, hobby, requirement, trait);
         return "redirect:/";
     }
 
@@ -141,10 +140,9 @@ public class ClientsController {
                                @RequestParam String firstName,
                                @RequestParam String lastName,
                                @RequestParam String aboutYourself,
-                               @RequestParam int age,
                                @RequestParam String sex,
                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate) {
-        mainService.updateClient(id, firstName, lastName, aboutYourself, age, sex, birthdate);
+        mainService.updateClient(id, firstName, lastName, aboutYourself, sex, birthdate);
         return "redirect:/client_info?id=" + id;
     }
 
