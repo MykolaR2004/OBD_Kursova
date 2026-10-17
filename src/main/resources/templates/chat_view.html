@@ -12,7 +12,7 @@
         <div th:class="'message ' + (${msg.user_1_ID} == ${currentUserId} ? 'sender' : 'recipient')">
             <div class="message-content">
                 <p>
-                    <strong th:text="${msg.user_2_ID} == ${currentUserId} ? ${msg.client1NameSurname} : ${msg.client1NameSurname}"></strong>
+                    <strong th:text="${msg.client1NameSurname}"></strong>
                 </p>
                 <p th:text="${msg.message}"></p>
                 <p><small th:text="${msg.creation_date}"></small></p>

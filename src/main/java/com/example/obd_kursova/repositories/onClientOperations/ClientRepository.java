@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Integer> {
-    @Query(value = """ 
+    @Query(value = """
 SELECT
     C.id,
     C.name,
@@ -21,14 +21,14 @@ SELECT
     GROUP_CONCAT(DISTINCT R.Requirement ORDER BY R.Requirement SEPARATOR ', ') AS requirement
 FROM
     client C
-    JOIN hobbylist HL ON HL.User_ID = C.id
-    JOIN hobbies H ON HL.Hobby_ID = H.ID
-    JOIN requirements_list RL ON RL.User_ID = C.id
-    JOIN requirements R ON R.ID = RL.requirement_id
+    LEFT JOIN hobbylist HL ON HL.User_ID = C.id
+    LEFT JOIN hobbies H ON HL.Hobby_ID = H.ID
+    LEFT JOIN requirements_list RL ON RL.User_ID = C.id
+    LEFT JOIN requirements R ON R.ID = RL.requirement_id
 GROUP BY
-    C.id, C.name, C.surname, C.aboutYourself, C.birthdate, C.sex, R.Requirement
+    C.id, C.name, C.surname, C.aboutYourself, C.birthdate, C.sex
 ORDER BY
-    C.ID
+    C.id
 """, nativeQuery = true)
     List<ClientsReqsHobbs> getClientsWithReqsHobbs();
 

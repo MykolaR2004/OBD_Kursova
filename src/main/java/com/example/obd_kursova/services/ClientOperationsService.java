@@ -28,8 +28,8 @@ public class ClientOperationsService {
     private final AvailableRequirementsRepository availableRequirementsRepository;
 
     @Transactional
-    public void addClient(String firstName, String lastName, String aboutYourself, int age, String sex, LocalDate birthdate, int hobbyId, int requirementId, int traitId) {
-        newClientRepository.insertClient(firstName, lastName, aboutYourself, age, sex, birthdate, "images/client_photo.jpg");
+    public void addClient(String firstName, String lastName, String aboutYourself, String sex, LocalDate birthdate, int hobbyId, int requirementId, int traitId) {
+        newClientRepository.insertClient(firstName, lastName, aboutYourself, sex, birthdate, "images/client_photo.jpg");
         Integer clientId = newClientRepository.getLastInsertId();
         newClientRepository.insertHobby(clientId, hobbyId);
         newClientRepository.insertRequirement(clientId, requirementId);

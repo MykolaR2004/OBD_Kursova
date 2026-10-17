@@ -13,8 +13,8 @@ public interface UpdateClientRepository extends JpaRepository<Client, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE client SET name = ?2, surname = ?3, aboutYourself = ?4, age = ?5, sex = ?6, birthdate = ?7 WHERE id = ?1", nativeQuery = true)
-    void updateClient(int id, String firstName, String lastName, String aboutYourself, int age, String sex, LocalDate birthdate);
+    @Query(value = "UPDATE client SET name = ?2, surname = ?3, aboutYourself = ?4, age = TIMESTAMPDIFF(YEAR, ?6, CURDATE()), sex = ?5, birthdate = ?6 WHERE id = ?1", nativeQuery = true)
+    void updateClient(int id, String firstName, String lastName, String aboutYourself, String sex, LocalDate birthdate);
 
     @Modifying
     @Transactional

@@ -10,8 +10,8 @@ import java.time.LocalDate;
 public interface NewClientRepository extends JpaRepository<Client, Integer> {
 
     @Modifying
-    @Query(value = "INSERT INTO client (name, surname, aboutYourself, age, sex, birthdate, photo) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", nativeQuery = true)
-    void insertClient(String firstName, String lastName, String aboutYourself, int age, String sex, LocalDate birthdate, String photo);
+    @Query(value = "INSERT INTO client (name, surname, aboutYourself, age, sex, birthdate, photo) VALUES (?1, ?2, ?3, TIMESTAMPDIFF(YEAR, ?5, CURDATE()), ?4, ?5, ?6)", nativeQuery = true)
+    void insertClient(String firstName, String lastName, String aboutYourself, String sex, LocalDate birthdate, String photo);
 
     @Query(value = "SELECT LAST_INSERT_ID()", nativeQuery = true)
     Integer getLastInsertId();
